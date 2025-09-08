@@ -8,9 +8,12 @@
     "start": "next start"
   },
   "dependencies": {
+    "ky": "^1.10.0",
+    "next": "15.5.2",
+    "next-sitemap": "^4.2.3",
     "react": "19.1.0",
     "react-dom": "19.1.0",
-    "next": "15.5.2"
+    "zod": "^4.1.5"
   },
   "devDependencies": {
     "@tailwindcss/postcss": "^4",
