@@ -1,13 +1,14 @@
-import Carousel from '@/components/Carousel'
-import React from 'react'
+import Carousel from "@/components/Carousel";
+import Navbar from "@/components/Navbar";
+import React from "react";
 
 const Page = () => {
   return (
     <div>
-      Home
+      <Navbar />
       {/* <Carousel/> */}
     </div>
-  )
-}
+  );
+};
 
-export default Page
+export default Page;
