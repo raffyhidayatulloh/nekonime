@@ -10,6 +10,7 @@ interface CarouselProps {
 }
 
 const Carousel = ({ api }: CarouselProps) => {
+  console.log("🚀 ~ Carousel ~ api:", api);
   const [index, setIndex] = useState(0);
 
   const goToSlide = (i: number) => {
