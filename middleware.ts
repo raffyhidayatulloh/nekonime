@@ -1,10 +1,6 @@
 import { rateLimit } from "@/libs/rateLimit";
 import { NextResponse, type NextRequest } from "next/server";
 
-function generateNonce() {
-  return crypto.randomUUID().replace(/-/g, "");
-}
-
 export async function middleware(req: NextRequest) {
   const ip = req.headers.get("x-forwarded-for") ?? "127.0.0.1";
 
@@ -22,19 +18,10 @@ export async function middleware(req: NextRequest) {
     });
   }
 
-  const nonce = generateNonce();
 
-  const res = NextResponse.next({
-    request: {
-      headers: req.headers,
-    },
-  });
-  res.headers.set("Content-Security-Policy", `script-src 'self' 'nonce-${nonce}'`);
-  res.headers.set("X-Nonce", nonce);
-
+  const res = NextResponse.next({ request: { headers: req.headers, }, });
+  res.headers.set("Content-Security-Policy", "script-src 'self' 'unsafe-inline' 'unsafe-eval'; style-src 'self' 'unsafe-inline'");
   return res;
 }
 
-export const config = {
-  matcher: ["/((?!_next/static|_next/image|favicon.ico).*)"],
-};
+export const config = { matcher: ["/((?!_next/static|_next/image|favicon.ico).*)"], };

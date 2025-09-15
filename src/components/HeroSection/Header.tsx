@@ -6,7 +6,7 @@ const Header = () => {
       <nav className="flex items-center justify-between p-6 lg:px-8">
         <div className="flex lg:flex-1">
           <a href="/" className="-m-1.5 p-1.5">
-            <span className="font-bold text-2xl">NekoNime</span>
+            <span className="font-bold text-2xl">Nekonime</span>
           </a>
         </div>
         <div className="lg:flex lg:flex-1 lg:justify-end">
