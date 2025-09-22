@@ -9,9 +9,7 @@ import { truncateText, formatItems } from "@/utils/carousel";
 
 const CarouselSlide = memo<SlideProps>(({ anime, isActive, priority }) => (
   <div
-    className={`absolute inset-0 transition-opacity duration-700 ease-in-out ${
-      isActive ? "opacity-100 z-10" : "opacity-0 z-0"
-    }`}
+    className={`absolute inset-0 transition-opacity duration-700 ease-in-out ${isActive ? "opacity-100 z-10" : "opacity-0 z-0"}`}
     aria-hidden={!isActive}
   >
     <Image

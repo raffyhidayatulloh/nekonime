@@ -2,6 +2,7 @@ import { Inter, Poppins } from "next/font/google";
 import "./globals.css";
 import React from "react";
 import { Metadata, Viewport } from "next";
+import ClientWrapper from "@/components/ClientWrapper";
 
 const inter = Inter({
   variable: "--font-inter",
@@ -34,7 +35,7 @@ export default function RootLayout({ children, }: { children: React.ReactNode; }
   return (
     <html lang="en">
       <body className={`${inter.variable} ${poppins.variable} antialiased`}>
-        {children}
+        <ClientWrapper>{children}</ClientWrapper>
       </body>
     </html>
   );

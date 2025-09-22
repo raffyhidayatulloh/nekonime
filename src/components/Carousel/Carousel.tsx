@@ -24,15 +24,7 @@ export default function Carousel({
   } = useCarousel(slideCount, autoPlay);
 
   // Empty state
-  if (slideCount === 0) {
-    return (
-      <div
-        className={`w-full h-48 sm:h-64 md:h-80 lg:h-96 xl:h-100 bg-gray-200 rounded-lg flex items-center justify-center ${className}`}
-      >
-        <p className="text-gray-500">No content available</p>
-      </div>
-    );
-  }
+  if (slideCount === 0)  return null
 
   return (
     <div

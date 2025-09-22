@@ -2,7 +2,7 @@
 
 :root {
   --background: #ffffff;
-  --foreground: #171717;
+  --foreground: #080808;
 
   --pri-sakura-pink: #FF6FA9;
   --sec-midnight-purple: #2B1D3F;
@@ -22,8 +22,8 @@
 
 @media (prefers-color-scheme: dark) {
   :root {
-    --background: #0E0E0E;
-    --foreground: #ededed;
+    --background: #080808;
+    --foreground: #ffffff;
   }
 }
 
