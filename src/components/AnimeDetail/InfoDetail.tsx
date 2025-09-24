@@ -3,7 +3,7 @@
 import { fetchCharactersByPage } from "@/libs/anilist-api";
 import { Anime } from "@/types/api";
 import Image from "next/image";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 
 interface InfoDetailProps {
   anime: Anime;
@@ -19,17 +19,41 @@ const InfoDetail: React.FC<InfoDetailProps> = ({ anime }) => {
   const [characters, setCharacters] = useState(anime.characters || []);
   const [page, setPage] = useState(1);
   const [hasNextPage, setHasNextPage] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+  const [fadeClass, setFadeClass] = useState("opacity-100");
+  const charactersGridRef = useRef<HTMLDivElement>(null);
   const perPage = 12;
+
   const loadCharacters = async (newPage: number) => {
-    const data = await fetchCharactersByPage(
-      String(anime.mal_id),
-      newPage,
-      perPage
-    );
-    setCharacters(data.characters);
-    setPage(data.pageInfo.currentPage);
-    setHasNextPage(data.pageInfo.hasNextPage);
+    setIsLoading(true);
+    setFadeClass("opacity-0");
+
+    // start API call immediately
+    try {
+      const data = await fetchCharactersByPage(
+        String(anime.mal_id),
+        newPage,
+        perPage
+      );
+      setCharacters(data.characters);
+      setPage(data.pageInfo.currentPage);
+      setHasNextPage(data.pageInfo.hasNextPage);
+
+      // Scroll on mobile
+      if (window.innerWidth < 768 && charactersGridRef.current) {
+        charactersGridRef.current.scrollIntoView({
+          behavior: "smooth",
+          block: "start",
+        });
+      }
+    } catch (error) {
+      console.error("Error loading characters:", error);
+    }
+
+    setFadeClass("opacity-100");
+    setIsLoading(false);
   };
+
   useEffect(() => {
     if (activeTab === "Characters") {
       loadCharacters(1);
@@ -136,7 +160,10 @@ const InfoDetail: React.FC<InfoDetailProps> = ({ anime }) => {
 
           {activeTab === "Characters" && (
             <div className="space-y-4">
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+              <div
+                ref={charactersGridRef}
+                className={`grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 transition-opacity duration-100 ease-in-out ${fadeClass}`}
+              >
                 {characters && characters.length > 0 ? (
                   characters.map((char) => (
                     <div
@@ -168,19 +195,24 @@ const InfoDetail: React.FC<InfoDetailProps> = ({ anime }) => {
               {/* Pagination */}
               <div className="flex justify-center gap-4 mt-4">
                 <button
-                  disabled={page === 1}
+                  disabled={page === 1 || isLoading}
                   onClick={() => loadCharacters(page - 1)}
-                  className="px-3 py-1 rounded bg-white/20 text-sm disabled:opacity-50"
+                  className="px-3 py-1 rounded bg-white/20 text-sm disabled:opacity-50 transition-opacity duration-100"
                 >
-                  Prev
+                  {"<"}
                 </button>
-                <span className="text-white/70 text-sm">Page {page}</span>
+                <span className="text-white/70 text-sm flex items-center gap-2">
+                  Page {page}
+                  {isLoading && (
+                    <div className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin"></div>
+                  )}
+                </span>
                 <button
-                  disabled={!hasNextPage}
+                  disabled={!hasNextPage || isLoading}
                   onClick={() => loadCharacters(page + 1)}
-                  className="px-3 py-1 rounded bg-white/20 text-sm disabled:opacity-50"
+                  className="px-3 py-1 rounded bg-white/20 text-sm disabled:opacity-50 transition-opacity duration-100"
                 >
-                  Next
+                  {">"}
                 </button>
               </div>
             </div>
