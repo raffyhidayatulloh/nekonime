@@ -6,9 +6,11 @@ import Link from "next/link";
 import { Info } from "lucide-react";
 import { SlideProps } from "@/types/carousel";
 import { formatItems } from "@/utils/carousel";
+import { slugify } from "@/libs/slugify";
 
 const CarouselSlide = memo<SlideProps>(({ anime, isActive, priority }) => {
   const imageSrc = anime.bannerImage ?? anime.images.webp.image_url;
+  const slug = slugify(anime.title);
 
   return (
     <div
@@ -39,8 +41,8 @@ const CarouselSlide = memo<SlideProps>(({ anime, isActive, priority }) => {
 
       {/* Details button */}
       <Link
-        href={`/anime/${anime.mal_id}`}
-        className="absolute top-4 right-4 lg:bottom-6 lg:top-auto lg:right-6 z-20 inline-flex items-center gap-2 bg-black/80 backdrop-blur-sm border border-white/30 px-3 py-2 lg:px-4 lg:py-3 text-sm rounded-full hover:bg-black/95 transition-all duration-200 text-white focus:outline-none focus:ring-2 focus:ring-white/50 cursor-pointer"
+        href={`/anime/${anime.mal_id}/${slug}`}
+        className="absolute top-2 right-2 lg:bottom-6 lg:top-auto lg:right-6 z-20 inline-flex items-center gap-2 bg-black/80 backdrop-blur-sm border border-white/30 px-3 py-2 lg:px-4 lg:py-3 text-sm rounded-full hover:bg-black/95 transition-all duration-200 text-white focus:outline-none focus:ring-2 focus:ring-white/50 cursor-pointer"
         aria-label={`View details for ${anime.title}`}
       >
         <Info size={16} className="lg:size-5" />
@@ -48,7 +50,7 @@ const CarouselSlide = memo<SlideProps>(({ anime, isActive, priority }) => {
       </Link>
 
       {/* Content overlay */}
-      <div className="absolute bottom-0 left-0 right-0 p-4 lg:p-6 z-10 pointer-events-none">
+      <div className="absolute bottom-0 left-0 right-0 md:p-4 lg:p-6 z-10 pointer-events-none">
         <div className="flex flex-col items-center lg:w-2/3 xl:w-1/2 text-white">
           <h2 className="text-center font-bold text-lg sm:text-xl md:text-2xl lg:text-3xl xl:text-4xl mb-2 sm:mb-3 drop-shadow-lg line-clamp-1">
             {anime.title}
